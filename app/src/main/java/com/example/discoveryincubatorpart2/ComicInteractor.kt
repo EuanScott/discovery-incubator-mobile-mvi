@@ -10,14 +10,17 @@ import io.reactivex.schedulers.Schedulers
 class ComicInteractor {
     private val TAG = ComicInteractor::class.java.simpleName
 
-    fun getIssueList(searchIssues: IssueService): Observable<ComicState> {
+    fun getIssueList(searchIssues: IssueService): Observable<ComicViewState> {
         return ComicApi.retrofitService.getIssues(searchIssues)
             .switchMap(::getComicState)
             .subscribeOn(Schedulers.io())
-            .doOnError { Log.e(TAG, it.message ?: "") }
+            .doOnError {
+                Log.e(TAG, it.message ?: "")
+                ComicViewState.Error(it.message ?: "")
+            }
     }
 
-    private fun getComicState(issues: List<Issue>): Observable<ComicState> {
-        return Observable.just(ComicState.ComicsLoaded(issues))
+    private fun getComicState(issues: List<Issue>): Observable<ComicViewState> {
+        return Observable.just(ComicViewState.ComicsLoaded(issues))
     }
 }

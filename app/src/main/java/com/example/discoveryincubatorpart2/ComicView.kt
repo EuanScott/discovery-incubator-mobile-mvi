@@ -1,10 +1,9 @@
 package com.example.discoveryincubatorpart2
 
-import com.example.discoveryincubatorpart2.models.ComicStateViewModel
-import io.reactivex.Observable
 import com.hannesdorfmann.mosby3.mvp.MvpView
+import io.reactivex.Observable
 
-open interface ComicView : MvpView {
+interface ComicView : MvpView {
+    fun render(state: ComicViewState)
     open fun onCreateLifecycleHook(): Observable<String>
-    open fun render(viewState: ComicStateViewModel)
 }
