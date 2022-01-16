@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="gutterspace_half">8dp</dimen>
+    <dimen name="gutterspace">16dp</dimen>
+
+    <dimen name="standard_button_height">48dp</dimen>
+</resources>
