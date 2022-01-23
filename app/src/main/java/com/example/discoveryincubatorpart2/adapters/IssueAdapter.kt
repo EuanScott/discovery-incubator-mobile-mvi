@@ -1,6 +1,5 @@
 package com.example.discoveryincubatorpart2.adapters
 
-
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,8 +17,7 @@ import kotlinx.android.synthetic.main.item_issue.view.*
 class IssueAdapter(private val context: Context, private val issues: List<Issue>) :
     RecyclerView.Adapter<IssueAdapter.IssueViewHolder>() {
 
-    private val TAG: String = IssueAdapter::class.java.name
-
+    private val TAG = IssueAdapter::class.java.simpleName
     val itemTappedSubject: PublishSubject<String> = PublishSubject.create()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IssueViewHolder {
@@ -49,11 +47,11 @@ class IssueAdapter(private val context: Context, private val issues: List<Issue>
                 .error(R.drawable.image_not_available)
                 .into(itemView.ivCover, object : Callback {
                     override fun onSuccess() {
-                        Log.i("IssueAdapter", "Image loaded")
+                        Log.i(TAG, "Image loaded")
                     }
 
                     override fun onError(e: Exception?) {
-                        Log.i("IssueAdapter", "There was an error: $e")
+                        Log.i(TAG, "There was an error: $e")
                     }
                 })
 

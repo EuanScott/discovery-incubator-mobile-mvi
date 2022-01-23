@@ -1,30 +1,32 @@
-package com.example.discoveryincubator
+package com.example.discoveryincubatorpart2
 
-import android.util.Log
-import com.example.discoveryincubatorpart2.ComicInteractor
-import com.example.discoveryincubatorpart2.ComicView
-import com.example.discoveryincubatorpart2.ComicViewState
-import com.example.discoveryincubatorpart2.models.ComicStateViewModel
 import com.hannesdorfmann.mosby3.mvi.MviBasePresenter
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.Consumer
 
-class ComicPresenter() : MviBasePresenter<ComicView, ComicStateViewModel>() {
+class ComicPresenter() : MviBasePresenter<ComicView, ComicViewState>() {
 
     private val TAG: String = ComicPresenter::class.java.name
     private val comicInteractor: ComicInteractor = ComicInteractor()
 
     override fun bindIntents() {
-        val getPaymentDetails = intent(ComicView::onCreateLifecycleHook)
+        val getIssueList = intent(ComicView::listComic)
             .switchMap(comicInteractor::getIssueList)
             .observeOn(AndroidSchedulers.mainThread())
             .onErrorReturn {
-                Log.e(TAG, it.message ?: "")
-                ComicViewState.Error(it.message ?: "")
+                ComicViewState.Error(it.message ?: "Unable to get a list of comics.")
             }
 
+        val getSearchResults = intent(ComicView::searchComic)
+            .switchMap(comicInteractor::getIssueList)
+            .observeOn(AndroidSchedulers.mainThread())
+            .onErrorReturn {
+                ComicViewState.Error(it.message ?: "Unable to search for your comic.")
+            }
+
+        val allIntents: Observable<ComicViewState> = Observable.mergeArray(getIssueList, getSearchResults)
         val stateReducer = { _: ComicViewState, changeViewState: ComicViewState -> changeViewState }
-        val scanObservable = getPaymentDetails.scan(ComicViewState.Loading, stateReducer)
+        val scanObservable = allIntents.scan(ComicViewState.Loading, stateReducer)
         subscribeViewState(scanObservable, ComicView::render)
     }
 }

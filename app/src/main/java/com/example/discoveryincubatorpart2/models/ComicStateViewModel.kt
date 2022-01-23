@@ -1,6 +1,8 @@
 package com.example.discoveryincubatorpart2.models
 
-import android.util.Log
+/**
+ * Note: This is not in use, is it even needed?
+ */
 
 class ComicStateViewModel {
     private var isLoading = false
@@ -9,8 +11,6 @@ class ComicStateViewModel {
     private var comicListing = listOf<Issue>()
 
     fun copy(): ComicStateViewModel {
-        Log.i("tester", "Comics: ${this.comicListing}")
-        Log.i("tester", "Loading: ${this.isLoading}")
         return ComicStateViewModel()
             .setIsLoadingState(this.isLoading)
             .setShowComicListingState(this.showComicListing)
@@ -49,7 +49,7 @@ class ComicStateViewModel {
         return this.comicListing
     }
 
-    fun setComicListing(comicListing: List<Issue>): ComicStateViewModel  {
+    fun setComicListing(comicListing: List<Issue>): ComicStateViewModel {
         this.comicListing = comicListing
         return this
     }

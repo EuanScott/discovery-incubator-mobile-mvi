@@ -1,9 +1,11 @@
 package com.example.discoveryincubatorpart2
 
+import com.example.discoveryincubatorpart2.services.IssueService
 import com.hannesdorfmann.mosby3.mvp.MvpView
-import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 
 interface ComicView : MvpView {
     fun render(state: ComicViewState)
-    open fun onCreateLifecycleHook(): Observable<String>
+    val listComic: PublishSubject<IssueService>
+    val searchComic: PublishSubject<IssueService>
 }
